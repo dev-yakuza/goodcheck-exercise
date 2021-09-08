@@ -1,0 +1,28 @@
+<%= ERB.new(File.read('base/Dockerfile.git.erb')).result %>
+
+FROM openjdk:15.0.2-buster
+
+<%= ERB.new(File.read('base/Dockerfile.env.erb')).result %>
+<%= ERB.new(File.read('base/Dockerfile.prepare.erb')).result %>
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+# Install Gradle
+ARG GRADLE_VERSION=7.1
+ARG GRADLE_BINARY_FILE=gradle-${GRADLE_VERSION}-bin.zip
+ARG GRADLE_BINARY_URL=https://services.gradle.org/distributions/${GRADLE_BINARY_FILE}
+ARG GRADLE_HOME=${RUNNER_USER_HOME}/gradle
+ENV PATH ${GRADLE_HOME}/bin:${PATH}
+RUN cd "${RUNNER_USER_HOME}" && \
+    curl -fsSLO --compressed "${GRADLE_BINARY_URL}" && \
+    curl -fsSL  --compressed "${GRADLE_BINARY_URL}.sha256" | \
+      xargs -I {} echo "{} *${GRADLE_BINARY_FILE}" | \
+      sha256sum --check --strict && \
+    unzip -q "${GRADLE_BINARY_FILE}" && \
+    mv "gradle-${GRADLE_VERSION}" "${GRADLE_HOME}" && \
+    rm "${GRADLE_BINARY_FILE}" && \
+    gradle --version | grep "Gradle ${GRADLE_VERSION}"
+
+<%= ERB.new(File.read('base/Dockerfile.cleanup.erb')).result %>
+
+CMD ["java", "-version"]
