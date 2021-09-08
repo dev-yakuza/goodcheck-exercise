@@ -10,8 +10,4 @@
 
     * See details on [devon_rex/issues #564](https://github.com/sider/devon_rex/issues/564)
   justification:
-    - When ktlint support Java 16.
-  pass: |
-    FROM openjdk:15.*.*-buster
-  fail: |
-    FROM openjdk:16.*.*-buster
+    - When ktlint supports Java 16.
