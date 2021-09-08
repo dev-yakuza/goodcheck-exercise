@@ -3,7 +3,7 @@ rules:
     pattern:
       regexp: |-
         FROM openjdk:16.(.*).(.*)-buster
-    glob: "**/Dockerfile"
+    glob: "**/Dockerfile.erb"
     message: |
       **DO NOT MERGE!**
 
