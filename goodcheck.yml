@@ -1,12 +1,12 @@
 - id: review.check_java_version
   pattern:
     regexp: |-
-      FROM openjdk:16.[.].[.]-buster
+      FROM openjdk:16.[.*].[.*]-buster
   glob: Gemfile
   message: |
     **DO NOT MERGE**
 
-    ktlint does not support Java 16!
+    ktlint does not support Java 16.
 
     * See details on [devon_rex/issues #564](https://github.com/sider/devon_rex/issues/564)
   justification:
